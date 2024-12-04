@@ -1,12 +1,13 @@
 package com.zky.springddd.snackmachine;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.zky.springddd.common.Entity;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class SnackMachine extends Entity {
 
     private Money moneyInside;
@@ -18,6 +19,10 @@ public class SnackMachine extends Entity {
     }
 
     public void insertMoney(Money money) {
+        List<Money> validMoneys = Arrays.asList(Money.Cent, Money.TenCent, Money.Quarter, Money.Dollar, Money.FiveDollar, Money.TwentyDollar);
+        if (!validMoneys.contains(money)) {
+            throw new IllegalStateException();
+        }
         this.moneyInTransaction = Money.add(moneyInTransaction, money);
     }
 
@@ -27,6 +32,6 @@ public class SnackMachine extends Entity {
 
     public void buySnack() {
         this.moneyInside = Money.add(moneyInside, moneyInTransaction);
-        // this.moneyInTransaction = new Money(0, 0, 0, 0, 0, 0);
+        this.moneyInTransaction = Money.None;
     }
 }
