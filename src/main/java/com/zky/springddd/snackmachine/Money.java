@@ -2,6 +2,9 @@ package com.zky.springddd.snackmachine;
 
 import com.zky.springddd.common.ValueObject;
 
+import lombok.Getter;
+
+@Getter
 public class Money extends ValueObject<Money> {
 
     public static Money None = new Money(0, 0, 0, 0, 0, 0);
@@ -12,6 +15,7 @@ public class Money extends ValueObject<Money> {
     public static Money FiveDollar = new Money(0, 0, 0, 0, 1, 0);
     public static Money TwentyDollar = new Money(0, 0, 0, 0, 0, 1);
 
+    
     private final int oneCentCount;
     private final int tenCentCount;
     private final int quarterCount;
@@ -19,10 +23,6 @@ public class Money extends ValueObject<Money> {
     private final int fiveDollarCount;
     private final int twentyDollarCount;
     private double amount;
-
-    public double getAmount() {
-        return amount;
-    }
 
     public Money(int oneCentCount, int tenCentCount, int quarterCount, int oneDollarCount, int fiveDollarCount,
             int twentyDollarCount) {

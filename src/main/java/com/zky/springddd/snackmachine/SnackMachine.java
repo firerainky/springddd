@@ -34,4 +34,12 @@ public class SnackMachine extends Entity {
         this.moneyInside = Money.add(moneyInside, moneyInTransaction);
         this.moneyInTransaction = Money.None;
     }
+
+    public SnackMachineDto convertToDto() {
+        SnackMachineDto dto = new SnackMachineDto();
+        dto.setId(this.getId());
+        dto.setMoneyInside(this.moneyInside);
+        dto.setMoneyInTransaction(this.moneyInTransaction);
+        return dto;
+    }
 }
