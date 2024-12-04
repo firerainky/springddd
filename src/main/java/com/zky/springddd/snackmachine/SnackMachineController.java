@@ -6,19 +6,25 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
+
 
 @RestController
 @RequestMapping("/snackmachines")
+@RequiredArgsConstructor
 public class SnackMachineController {
-    static SnackMachine snackMachine = new SnackMachine();
+    private final SnackMachineRepository snackMachineRepository;
 
     @GetMapping("{id}")
     public SnackMachineDto getSnackMachine(@PathVariable long id) {
-        return snackMachine.convertToDto();
+        return snackMachineRepository.findById(id).orElse(null);
     }
     
     @PutMapping("{id}/moneyInTransaction/{coinOrNote}")
     public void insertMoney(@PathVariable long id, @PathVariable String coinOrNote) {
+        SnackMachineDto snackMachineDto = snackMachineRepository.findById(id).orElse(null);
+        SnackMachine snackMachine = snackMachineDto.convertToSnackMachine();
+
         if (coinOrNote.equalsIgnoreCase("Cent")) {
             snackMachine.insertMoney(Money.Cent);
         } else if (coinOrNote.equalsIgnoreCase("TenCent")) {
@@ -32,15 +38,27 @@ public class SnackMachineController {
         } else if (coinOrNote.equalsIgnoreCase("TwentyDollar")) {
             snackMachine.insertMoney(Money.TwentyDollar);
         }
+
+        snackMachineRepository.save(snackMachine.convertToDto());
     }
 
     @PutMapping("{id}/moneyInTransaction")
     public void returnMoney(@PathVariable long id) {
+        SnackMachineDto snackMachineDto = snackMachineRepository.findById(id).orElse(null);
+        SnackMachine snackMachine = snackMachineDto.convertToSnackMachine();
         snackMachine.returnMoney();
+        snackMachineRepository.save(snackMachine.convertToDto());
     }
 
     @PutMapping("{id}/{slotNumber}")
     public void buySnack(@PathVariable long id, @PathVariable int slotNumber) {
+        SnackMachineDto snackMachineDto = snackMachineRepository.findById(id).orElse(null);
+        SnackMachine snackMachine = snackMachineDto.convertToSnackMachine();
         snackMachine.buySnack();
+        snackMachineRepository.save(snackMachine.convertToDto());
+    }
+
+    public Money getWholMoney(SnackMachine snackMachine) {
+        return Money.add(snackMachine.getMoneyInside(), snackMachine.getMoneyInTransaction());
     }
 }

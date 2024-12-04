@@ -6,7 +6,9 @@ import java.util.List;
 import com.zky.springddd.common.Entity;
 
 import lombok.Getter;
+import lombok.Setter;
 
+@Setter
 @Getter
 public class SnackMachine extends Entity {
 
@@ -19,8 +21,8 @@ public class SnackMachine extends Entity {
     }
 
     public void insertMoney(Money money) {
-        List<Money> validMoneys = Arrays.asList(Money.Cent, Money.TenCent, Money.Quarter, Money.Dollar, Money.FiveDollar, Money.TwentyDollar);
-        if (!validMoneys.contains(money)) {
+        List<Money> coinsAndNotes = Arrays.asList(Money.Cent, Money.TenCent, Money.Quarter, Money.Dollar, Money.FiveDollar, Money.TwentyDollar);
+        if (!coinsAndNotes.contains(money)) {
             throw new IllegalStateException();
         }
         this.moneyInTransaction = Money.add(moneyInTransaction, money);
@@ -37,9 +39,14 @@ public class SnackMachine extends Entity {
 
     public SnackMachineDto convertToDto() {
         SnackMachineDto dto = new SnackMachineDto();
-        dto.setId(this.getId());
-        dto.setMoneyInside(this.moneyInside);
-        dto.setMoneyInTransaction(this.moneyInTransaction);
+        dto.setId(id);
+        dto.setMoneyInTransaction(moneyInTransaction.getAmount());
+        dto.setOneCentCount(moneyInside.getOneCentCount());
+        dto.setTenCentCount(moneyInside.getTenCentCount());
+        dto.setQuarterCount(moneyInside.getQuarterCount());
+        dto.setOneDollarCount(moneyInside.getOneDollarCount());
+        dto.setFiveDollarCount(moneyInside.getFiveDollarCount());
+        dto.setTwentyDollarCount(moneyInside.getTwentyDollarCount());
         return dto;
     }
 }

@@ -96,4 +96,12 @@ public class Money extends ValueObject<Money> {
                 fiveDollarCount == other.fiveDollarCount &&
                 twentyDollarCount == other.twentyDollarCount;
     }
+
+    @Override
+    public String toString() {
+        if (amount < 1) {
+            return "c" + amount;
+        }
+        return "$" + amount;
+    }
 }
