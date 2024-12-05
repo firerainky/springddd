@@ -1,19 +1,20 @@
 package com.zky.springddd.snackmachine;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class Slot {
 
-    private Snack snack;
-    private int quantity;
-    private double price;
+    private SnackPile snackPile;
     private SnackMachine snackMachine;
     private int position;
+
+    public Slot() {}
+    public Slot (SnackMachine snackMachine, int position) {
+        this.snackMachine = snackMachine;
+        this.position = position;
+        this.snackPile = new SnackPile(null, 0, 0);
+    }
 }

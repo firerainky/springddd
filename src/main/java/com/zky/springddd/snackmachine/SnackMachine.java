@@ -1,27 +1,36 @@
 package com.zky.springddd.snackmachine;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.zky.springddd.common.Entity;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
-@Getter
-public class SnackMachine extends Entity {
+public class SnackMachine extends AggregateRoot {
 
+    @Getter
+    @Setter
     private Money moneyInside;
+
+    @Getter
+    @Setter
     private Money moneyInTransaction;
+
+    private List<Slot> slots;
 
     public SnackMachine() {
         this.moneyInside = Money.None;
         this.moneyInTransaction = Money.None;
+        slots = new ArrayList<>();
+        slots.add(new Slot(this, 1));
+        slots.add(new Slot(this, 2));
+        slots.add(new Slot(this, 3));
     }
 
     public void insertMoney(Money money) {
-        List<Money> coinsAndNotes = Arrays.asList(Money.Cent, Money.TenCent, Money.Quarter, Money.Dollar, Money.FiveDollar, Money.TwentyDollar);
+        List<Money> coinsAndNotes = Arrays.asList(Money.Cent, Money.TenCent, Money.Quarter, Money.Dollar,
+                Money.FiveDollar, Money.TwentyDollar);
         if (!coinsAndNotes.contains(money)) {
             throw new IllegalStateException();
         }
@@ -32,9 +41,22 @@ public class SnackMachine extends Entity {
         this.moneyInTransaction = Money.None;
     }
 
-    public void buySnack() {
+    public void buySnack(int position) {
+        Slot slot = getSlot(position);
+        double price = slot.getSnackPile().getPrice();
+        if (moneyInTransaction.getAmount() < price) {
+            throw new IllegalStateException();
+        }
+        slot.setSnackPile(slot.getSnackPile().subtractOne());
         this.moneyInside = Money.add(moneyInside, moneyInTransaction);
         this.moneyInTransaction = Money.None;
+    }
+
+    public void loadSnacks(int position, SnackPile snackPile) {
+        Slot slot = slots.stream().filter(s -> s.getPosition() == position).findFirst().orElse(null);
+        if (slot != null) {
+            slot.setSnackPile(snackPile);
+        }
     }
 
     public SnackMachineDto convertToDto() {
@@ -48,5 +70,13 @@ public class SnackMachine extends Entity {
         dto.setFiveDollarCount(moneyInside.getFiveDollarCount());
         dto.setTwentyDollarCount(moneyInside.getTwentyDollarCount());
         return dto;
+    }
+
+    public SnackPile getSnackPile(int position) {
+        return getSlot(position).getSnackPile();
+    }
+
+    public Slot getSlot(int position) {
+        return slots.stream().filter(s -> s.getPosition() == position).findAny().orElse(null);
     }
 }

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Snack {
+public class Snack extends AggregateRoot {
 
     private String name;
 }

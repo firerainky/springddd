@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -16,12 +17,13 @@ public class SnackMachineController {
     private final SnackMachineRepository snackMachineRepository;
 
     @GetMapping("{id}")
+    @ResponseBody
     public SnackMachineDto getSnackMachine(@PathVariable long id) {
         return snackMachineRepository.findById(id).orElse(null);
     }
     
     @PutMapping("{id}/moneyInTransaction/{coinOrNote}")
-    public void insertMoney(@PathVariable long id, @PathVariable String coinOrNote) {
+    public void insertCoinOrNote(@PathVariable long id, @PathVariable String coinOrNote) {
         SnackMachineDto snackMachineDto = snackMachineRepository.findById(id).orElse(null);
         SnackMachine snackMachine = snackMachineDto.convertToSnackMachine();
 
@@ -54,7 +56,7 @@ public class SnackMachineController {
     public void buySnack(@PathVariable long id, @PathVariable int slotNumber) {
         SnackMachineDto snackMachineDto = snackMachineRepository.findById(id).orElse(null);
         SnackMachine snackMachine = snackMachineDto.convertToSnackMachine();
-        snackMachine.buySnack();
+        snackMachine.buySnack(slotNumber);
         snackMachineRepository.save(snackMachine.convertToDto());
     }
 
