@@ -1,15 +1,29 @@
 package com.zky.springddd.snackmachine;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Snack extends AggregateRoot {
 
     private String name;
+
+    public Snack() {}
+
+    public Snack(long id, String name) {
+        setId(id);
+        this.name = name;
+    }
+
+    public Snack(String name) {
+        this.name = name;
+    }
+
+    public SnackDto convertToSnackDto() {
+        SnackDto snackDto = new SnackDto();
+        snackDto.setId(getId());
+        snackDto.setName(name);
+        return snackDto;
+    }
 }

@@ -41,7 +41,7 @@ public class SnackMachineController {
             snackMachine.insertMoney(Money.TwentyDollar);
         }
 
-        snackMachineRepository.save(snackMachine.convertToDto());
+        snackMachineRepository.save(snackMachine.convertToSnackMachineDto());
     }
 
     @PutMapping("{id}/moneyInTransaction")
@@ -49,7 +49,7 @@ public class SnackMachineController {
         SnackMachineDto snackMachineDto = snackMachineRepository.findById(id).orElse(null);
         SnackMachine snackMachine = snackMachineDto.convertToSnackMachine();
         snackMachine.returnMoney();
-        snackMachineRepository.save(snackMachine.convertToDto());
+        snackMachineRepository.save(snackMachine.convertToSnackMachineDto());
     }
 
     @PutMapping("{id}/{slotNumber}")
@@ -57,10 +57,10 @@ public class SnackMachineController {
         SnackMachineDto snackMachineDto = snackMachineRepository.findById(id).orElse(null);
         SnackMachine snackMachine = snackMachineDto.convertToSnackMachine();
         snackMachine.buySnack(slotNumber);
-        snackMachineRepository.save(snackMachine.convertToDto());
+        snackMachineRepository.save(snackMachine.convertToSnackMachineDto());
     }
 
     public Money getWholMoney(SnackMachine snackMachine) {
-        return Money.add(snackMachine.getMoneyInside(), snackMachine.getMoneyInTransaction());
+        return snackMachine.getMoneyInside();
     }
 }

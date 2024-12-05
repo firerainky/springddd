@@ -7,21 +7,17 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
+@Setter
 public class SnackMachine extends AggregateRoot {
 
-    @Getter
-    @Setter
-    private Money moneyInside;
-
-    @Getter
-    @Setter
-    private Money moneyInTransaction;
-
+    private Money moneyInside;    
+    private double moneyInTransaction;
     private List<Slot> slots;
 
     public SnackMachine() {
         this.moneyInside = Money.None;
-        this.moneyInTransaction = Money.None;
+        this.moneyInTransaction = 0;
         slots = new ArrayList<>();
         slots.add(new Slot(this, 1));
         slots.add(new Slot(this, 2));
@@ -34,22 +30,30 @@ public class SnackMachine extends AggregateRoot {
         if (!coinsAndNotes.contains(money)) {
             throw new IllegalStateException();
         }
-        this.moneyInTransaction = Money.add(moneyInTransaction, money);
+        this.moneyInside = Money.add(moneyInside, money);
+        this.moneyInTransaction += money.getAmount();
     }
 
     public void returnMoney() {
-        this.moneyInTransaction = Money.None;
+        Money moneyToReturn = moneyInside.allocate(moneyInTransaction);
+        this.moneyInside = moneyInside.substract(moneyToReturn);
+        this.moneyInTransaction = 0;
+    }
+
+    public void loadMoney(Money money) {
+        this.moneyInside = Money.add(moneyInside, money);
     }
 
     public void buySnack(int position) {
         Slot slot = getSlot(position);
         double price = slot.getSnackPile().getPrice();
-        if (moneyInTransaction.getAmount() < price) {
+        if (moneyInTransaction < price) {
             throw new IllegalStateException();
         }
         slot.setSnackPile(slot.getSnackPile().subtractOne());
-        this.moneyInside = Money.add(moneyInside, moneyInTransaction);
-        this.moneyInTransaction = Money.None;
+        Money change = moneyInside.allocate(moneyInTransaction - price);
+        moneyInside = moneyInside.substract(change);
+        moneyInTransaction = 0;
     }
 
     public void loadSnacks(int position, SnackPile snackPile) {
@@ -59,10 +63,10 @@ public class SnackMachine extends AggregateRoot {
         }
     }
 
-    public SnackMachineDto convertToDto() {
+    public SnackMachineDto convertToSnackMachineDto() {
         SnackMachineDto dto = new SnackMachineDto();
         dto.setId(id);
-        dto.setMoneyInTransaction(moneyInTransaction.getAmount());
+        dto.setMoneyInTransaction(moneyInTransaction);
         dto.setOneCentCount(moneyInside.getOneCentCount());
         dto.setTenCentCount(moneyInside.getTenCentCount());
         dto.setQuarterCount(moneyInside.getQuarterCount());
@@ -76,7 +80,7 @@ public class SnackMachine extends AggregateRoot {
         return getSlot(position).getSnackPile();
     }
 
-    public Slot getSlot(int position) {
+    private Slot getSlot(int position) {
         return slots.stream().filter(s -> s.getPosition() == position).findAny().orElse(null);
     }
 }

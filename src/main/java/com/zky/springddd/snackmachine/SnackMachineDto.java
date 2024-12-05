@@ -1,8 +1,13 @@
 package com.zky.springddd.snackmachine;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,37 +29,17 @@ public class SnackMachineDto {
 
     private double moneyInTransaction;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "snack_machine_id")
+    private List<SlotDto> slotDtos;
+
     public SnackMachine convertToSnackMachine() {
         SnackMachine snackMachine = new SnackMachine();
         snackMachine.setId(id);
-        snackMachine.setMoneyInTransaction(convertAmountToMoney());
-        Money moneyInside = new Money(oneCentCount, tenCentCount, quarterCount, oneDollarCount, fiveDollarCount, twentyDollarCount);
-        snackMachine.setMoneyInside(moneyInside);
+        snackMachine.setMoneyInTransaction(moneyInTransaction);
+        snackMachine.setMoneyInside(new Money(oneCentCount, tenCentCount, quarterCount, oneDollarCount, fiveDollarCount,
+                twentyDollarCount));
+        snackMachine.setSlots(slotDtos.stream().map(SlotDto::convertToSlot).toList());
         return snackMachine;
     }
-
-    private Money convertAmountToMoney() {
-        double amount = moneyInTransaction;
-
-        int twentyDollarCount = (int) (amount / 20);
-        amount = amount % 20;
-
-        int fiveDollarCount = (int) (amount / 5);
-        amount = amount % 5;
-
-        int oneDollarCount = (int) amount;
-        amount = amount % 1;
-
-        int quarterCount = (int) (amount / 0.25);
-        amount = amount % 0.25;
-
-        int tenCentCount = (int) (amount / 0.1);
-        amount = amount % 0.1;
-
-        int oneCentCount = (int) (amount / 0.01);
-
-        return new Money(oneCentCount, tenCentCount, quarterCount, oneDollarCount, fiveDollarCount, twentyDollarCount);
-    }
 }
-
-

@@ -76,6 +76,45 @@ public class Money extends ValueObject<Money> {
                 twentyDollarCount - other.twentyDollarCount);
     }
 
+    public boolean canAllocate(double amount) {
+        Money money = allocateCore(amount);
+        return money.amount == amount;
+    }
+
+    public Money allocate(double amount) {
+        if (!canAllocate(amount)) {
+            throw new IllegalStateException();
+        }
+        return allocateCore(amount);
+    }
+
+    private Money allocateCore(double amount) {
+        int twentyDollarCountToAllocate = Math.min((int) (amount / 20), twentyDollarCount);
+        amount -= twentyDollarCountToAllocate * 20;
+
+        int fiveDollarCountToAllocate = Math.min((int) (amount / 5), fiveDollarCount);
+        amount -= fiveDollarCountToAllocate * 5;
+
+        int oneDollarCountToAllocate = Math.min((int) amount, oneDollarCount);
+        amount -= oneDollarCountToAllocate;
+
+        int quarterCountToAllocate = Math.min((int) (amount / 0.25), quarterCount);
+        amount -= quarterCountToAllocate * 0.25;
+
+        int tenCentCountToAllocate = Math.min((int) (amount / 0.1), tenCentCount);
+        amount -= tenCentCountToAllocate * 0.1;
+
+        int oneCentCountToAllocate = Math.min((int) (amount / 0.01), oneCentCount);
+
+        return new Money(
+                oneCentCountToAllocate,
+                tenCentCountToAllocate,
+                quarterCountToAllocate,
+                oneDollarCountToAllocate,
+                fiveDollarCountToAllocate,
+                twentyDollarCountToAllocate);
+    }
+
     @Override
     protected int hashCodeCore() {
         int hashCode = oneCentCount;
