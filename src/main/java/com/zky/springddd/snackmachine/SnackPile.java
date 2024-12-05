@@ -7,6 +7,8 @@ import lombok.Getter;
 @Getter
 public class SnackPile extends ValueObject<SnackPile> {
 
+    public static SnackPile Empty = new SnackPile(Snack.None, 0, 0);
+
     private Snack snack;
     private int quantity;
     private double price;

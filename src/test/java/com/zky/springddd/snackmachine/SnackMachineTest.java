@@ -55,7 +55,7 @@ public class SnackMachineTest {
     @Test
     void buySnack_tradesInsertedMoneyForASnack() {
         SnackMachine snackMachine = new SnackMachine();
-        snackMachine.loadSnacks(1, new SnackPile(new Snack("Some snack"), 1, 1));
+        snackMachine.loadSnacks(1, new SnackPile(Snack.Chocolate, 1, 1));
 
         snackMachine.insertMoney(Money.Dollar);
         snackMachine.buySnack(1);
@@ -68,7 +68,7 @@ public class SnackMachineTest {
     @Test
     void buySnack_canNotMakePurchase_ifSnackQuantityIsZero() {
         SnackMachine snackMachine = new SnackMachine();
-        snackMachine.loadSnacks(1, new SnackPile(new Snack("Some snack"), 0, 1));
+        snackMachine.loadSnacks(1, new SnackPile(Snack.Chocolate, 0, 1));
         snackMachine.insertMoney(Money.Dollar);
 
         assertThrows(IllegalStateException.class, () -> {
@@ -79,7 +79,7 @@ public class SnackMachineTest {
     @Test
     void buySnack_canNotMakePurchase_ifNotEnoughMoneyInserted() {
         SnackMachine snackMachine = new SnackMachine();
-        snackMachine.loadSnacks(1, new SnackPile(new Snack("Some snack"), 1, 2));
+        snackMachine.loadSnacks(1, new SnackPile(Snack.Chocolate, 1, 2));
         snackMachine.insertMoney(Money.Dollar);
 
         assertThrows(IllegalStateException.class, () -> {
@@ -90,7 +90,7 @@ public class SnackMachineTest {
     @Test
     void buySnack_changeShouldBeReturn_afterPurchase() {
         SnackMachine snackMachine = new SnackMachine();
-        snackMachine.loadSnacks(1, new SnackPile(new Snack("Some snack"), 1, 0.5));
+        snackMachine.loadSnacks(1, new SnackPile(Snack.Chocolate, 1, 0.5));
         snackMachine.loadMoney(new Money(0, 10, 0, 0, 0, 0));
         
         snackMachine.insertMoney(Money.Dollar);
@@ -103,7 +103,7 @@ public class SnackMachineTest {
     @Test
     void buySnack_canNotPurchase_whenNotEnoughChange() {
         SnackMachine snackMachine = new SnackMachine();
-        snackMachine.loadSnacks(1, new SnackPile(new Snack("Some snack"), 1, 0.5));
+        snackMachine.loadSnacks(1, new SnackPile(Snack.Chocolate, 1, 0.5));
         snackMachine.insertMoney(Money.Dollar);
 
         assertThrows(IllegalStateException.class, () -> {
@@ -116,7 +116,7 @@ public class SnackMachineTest {
         SnackMachine snackMachine = new SnackMachine();
 
         assertThrows(IllegalStateException.class, () -> {
-            snackMachine.loadSnacks(1, new SnackPile(new Snack("Some snack"), 1, -2));
+            snackMachine.loadSnacks(1, new SnackPile(Snack.Chocolate, 1, -2));
         });
     }
 
@@ -125,7 +125,7 @@ public class SnackMachineTest {
         SnackMachine snackMachine = new SnackMachine();
 
         assertThrows(IllegalStateException.class, () -> {
-            snackMachine.loadSnacks(1, new SnackPile(new Snack("Some snack"), -1, 2));
+            snackMachine.loadSnacks(1, new SnackPile(Snack.Chocolate, -1, 2));
         });
     }
 }

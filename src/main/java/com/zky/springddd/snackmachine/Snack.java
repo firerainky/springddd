@@ -7,16 +7,15 @@ import lombok.Setter;
 @Setter
 public class Snack extends AggregateRoot {
 
+    public static Snack None = new Snack(0, "None");
+    public static Snack Chocolate = new Snack(1, "Chocolate");
+    public static Snack Soda = new Snack(2, "Soda");
+    public static Snack Gum = new Snack(3, "Gum");
+
     private String name;
 
-    public Snack() {}
-
-    public Snack(long id, String name) {
+    private Snack(long id, String name) {
         setId(id);
-        this.name = name;
-    }
-
-    public Snack(String name) {
         this.name = name;
     }
 

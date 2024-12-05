@@ -15,9 +15,16 @@ public class SnackDto {
     private String name;
 
     public Snack convertToSnack() {
-        Snack snack = new Snack();
-        snack.setId(id);
-        snack.setName(name);
-        return snack;
+        if (id == 0) {
+            return Snack.None;
+        } else if (id == 1) {
+            return Snack.Chocolate;
+        } else if (id == 2) {
+            return Snack.Soda;
+        } else if (id == 3) {
+            return Snack.Gum;
+        } else {
+            throw new IllegalStateException();
+        }
     }
 }

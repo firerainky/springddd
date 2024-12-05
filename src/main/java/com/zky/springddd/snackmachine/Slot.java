@@ -17,7 +17,7 @@ public class Slot extends Entity {
     public Slot (SnackMachine snackMachine, int position) {
         this.snackMachine = snackMachine;
         this.position = position;
-        this.snackPile = new SnackPile(null, 0, 0);
+        this.snackPile = SnackPile.Empty;
     }
 
     public SlotDto convertToSlotDto() {

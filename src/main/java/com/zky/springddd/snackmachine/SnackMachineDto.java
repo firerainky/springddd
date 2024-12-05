@@ -31,7 +31,7 @@ public class SnackMachineDto {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "snack_machine_id")
-    private List<SlotDto> slotDtos;
+    private List<SlotDto> slotDtoList;
 
     public SnackMachine convertToSnackMachine() {
         SnackMachine snackMachine = new SnackMachine();
@@ -39,7 +39,7 @@ public class SnackMachineDto {
         snackMachine.setMoneyInTransaction(moneyInTransaction);
         snackMachine.setMoneyInside(new Money(oneCentCount, tenCentCount, quarterCount, oneDollarCount, fiveDollarCount,
                 twentyDollarCount));
-        snackMachine.setSlots(slotDtos.stream().map(SlotDto::convertToSlot).toList());
+        snackMachine.setSlots(slotDtoList.stream().map(SlotDto::convertToSlot).toList());
         return snackMachine;
     }
 }
