@@ -29,7 +29,7 @@ public class SnackMachineDto {
     private int fiveDollarCount;
     private int twentyDollarCount;
 
-    private double moneyInTransaction;
+    private float moneyInTransaction;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "snack_machine_id")

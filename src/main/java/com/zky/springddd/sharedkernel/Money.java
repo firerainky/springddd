@@ -15,14 +15,13 @@ public class Money extends ValueObject<Money> {
     public static Money FiveDollar = new Money(0, 0, 0, 0, 1, 0);
     public static Money TwentyDollar = new Money(0, 0, 0, 0, 0, 1);
 
-    
     private final int oneCentCount;
     private final int tenCentCount;
     private final int quarterCount;
     private final int oneDollarCount;
     private final int fiveDollarCount;
     private final int twentyDollarCount;
-    private double amount;
+    private float amount;
 
     public Money(int oneCentCount, int tenCentCount, int quarterCount, int oneDollarCount, int fiveDollarCount,
             int twentyDollarCount) {
@@ -52,7 +51,7 @@ public class Money extends ValueObject<Money> {
         this.oneDollarCount = oneDollarCount;
         this.fiveDollarCount = fiveDollarCount;
         this.twentyDollarCount = twentyDollarCount;
-        this.amount = oneCentCount * 0.01 + tenCentCount * 0.1 + quarterCount * 0.25 + oneDollarCount
+        this.amount = oneCentCount * 0.01f + tenCentCount * 0.1f + quarterCount * 0.25f + oneDollarCount
                 + fiveDollarCount * 5 + twentyDollarCount * 20;
     }
 
@@ -64,6 +63,12 @@ public class Money extends ValueObject<Money> {
                 money1.oneDollarCount + money2.oneDollarCount,
                 money1.fiveDollarCount + money2.fiveDollarCount,
                 money1.twentyDollarCount + money2.twentyDollarCount);
+    }
+
+    public Money add(Money other) {
+        return new Money(this.oneCentCount + other.oneCentCount, this.tenCentCount + other.tenCentCount,
+                this.quarterCount + other.quarterCount, this.oneDollarCount + other.oneDollarCount,
+                this.fiveDollarCount + other.fiveDollarCount, this.twentyDollarCount + other.twentyDollarCount);
     }
 
     public Money substract(Money other) {
@@ -98,13 +103,13 @@ public class Money extends ValueObject<Money> {
         int oneDollarCountToAllocate = Math.min((int) amount, oneDollarCount);
         amount -= oneDollarCountToAllocate;
 
-        int quarterCountToAllocate = Math.min((int) (amount / 0.25), quarterCount);
+        int quarterCountToAllocate = Math.min((int) (amount / 0.25f), quarterCount);
         amount -= quarterCountToAllocate * 0.25;
 
-        int tenCentCountToAllocate = Math.min((int) (amount / 0.1), tenCentCount);
+        int tenCentCountToAllocate = Math.min((int) (amount / 0.1f), tenCentCount);
         amount -= tenCentCountToAllocate * 0.1;
 
-        int oneCentCountToAllocate = Math.min((int) (amount / 0.01), oneCentCount);
+        int oneCentCountToAllocate = Math.min((int) (amount / 0.01f), oneCentCount);
 
         return new Money(
                 oneCentCountToAllocate,

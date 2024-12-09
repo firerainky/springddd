@@ -11,11 +11,11 @@ public class SnackPile extends ValueObject<SnackPile> {
 
     private Snack snack;
     private int quantity;
-    private double price;
+    private float price;
 
     public SnackPile() {}
 
-    public SnackPile(Snack snack, int quantity, double price) {
+    public SnackPile(Snack snack, int quantity, float price) {
         if (quantity < 0) {
             throw new IllegalStateException();
         }
@@ -35,7 +35,7 @@ public class SnackPile extends ValueObject<SnackPile> {
     protected int hashCodeCore() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + (int) Double.doubleToLongBits(price);
+        result = prime * result + Float.floatToIntBits(price);
         result = prime * result + quantity;
         result = prime * result + ((snack == null) ? 0 : snack.hashCode());
         return result;

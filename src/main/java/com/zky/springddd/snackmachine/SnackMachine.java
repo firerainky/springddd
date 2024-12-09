@@ -15,7 +15,7 @@ import lombok.Setter;
 public class SnackMachine extends AggregateRoot {
 
     private Money moneyInside;    
-    private double moneyInTransaction;
+    private float moneyInTransaction;
     private List<Slot> slots;
 
     public SnackMachine() {

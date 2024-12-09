@@ -18,7 +18,7 @@ public class SlotDto {
     private long id;
 
     private int quantity;
-    private double price;
+    private float price;
     private int position;
 
     @OneToOne(cascade = CascadeType.ALL)
