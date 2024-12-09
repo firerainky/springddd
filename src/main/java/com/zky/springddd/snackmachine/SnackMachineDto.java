@@ -2,6 +2,8 @@ package com.zky.springddd.snackmachine;
 
 import java.util.List;
 
+import com.zky.springddd.sharedkernel.Money;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

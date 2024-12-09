@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.zky.springddd.common.AggregateRoot;
+import com.zky.springddd.sharedkernel.Money;
+
 import lombok.Getter;
 import lombok.Setter;
 

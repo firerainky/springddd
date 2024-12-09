@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import com.zky.springddd.sharedkernel.Money;
+
 public class SnackMachineTest {
 
     @Test

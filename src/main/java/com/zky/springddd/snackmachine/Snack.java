@@ -1,5 +1,7 @@
 package com.zky.springddd.snackmachine;
 
+import com.zky.springddd.common.AggregateRoot;
+
 import lombok.Getter;
 import lombok.Setter;
 

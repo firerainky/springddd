@@ -1,4 +1,4 @@
-package com.zky.springddd.snackmachine;
+package com.zky.springddd.sharedkernel;
 
 import com.zky.springddd.common.ValueObject;
 

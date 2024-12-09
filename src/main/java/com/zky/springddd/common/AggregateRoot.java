@@ -1,6 +1,4 @@
-package com.zky.springddd.snackmachine;
-
-import com.zky.springddd.common.Entity;
+package com.zky.springddd.common;
 
 import lombok.Getter;
 import lombok.Setter;
