@@ -29,7 +29,7 @@ public class Atm extends AggregateRoot {
         moneyInside = moneyInside.add(money);
     }
 
-    private float calculateAmountWithCommission(float amount) {
+    public float calculateAmountWithCommission(float amount) {
         float commission = amount * commissionRate;
         float lessThanCent = commission % 0.01f;
         if (lessThanCent > 0) {
@@ -38,7 +38,7 @@ public class Atm extends AggregateRoot {
         return amount + commission;
     }
 
-    private String canTakeMoney(float amount) {
+    public String canTakeMoney(float amount) {
         if (amount <= 0f) {
             return "Invalid amount";
         }
@@ -49,5 +49,19 @@ public class Atm extends AggregateRoot {
             return "Not enough change";
         }
         return "";
+    }
+
+    public AtmDto convertToAtmDto() {
+        AtmDto atmDto = new AtmDto();
+        atmDto.setId(id);
+        atmDto.setMoneyCharged(moneyCharged);
+        atmDto.setOneCentCount(moneyInside.getOneCentCount());
+        atmDto.setTenCentCount(moneyInside.getTenCentCount());
+        atmDto.setQuarterCount(moneyInside.getQuarterCount());
+        atmDto.setOneDollarCount(moneyInside.getOneDollarCount());
+        atmDto.setFiveDollarCount(moneyInside.getFiveDollarCount());
+        atmDto.setTwentyDollarCount(moneyInside.getTwentyDollarCount());
+
+        return atmDto;
     }
 }
